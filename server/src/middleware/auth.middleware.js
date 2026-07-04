@@ -12,11 +12,11 @@ const authMiddleware = async (req, res, next) => {
       });
     }
 
-    const token = authHeader.split(" ")[1];
+    const token = authHeader.split(" ")[1]; //get the jwt token after bearer
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); //checks if token signed by secret and extracts payload
 
-    const user = await User.findById(decoded.id).select("-password");
+    const user = await User.findById(decoded.id).select("-password"); // return everything except pw
 
     if (!user) {
       return res.status(401).json({
@@ -25,9 +25,9 @@ const authMiddleware = async (req, res, next) => {
       });
     }
 
-    req.user = user;
+    req.user = user; //after logging in, this user use
 
-    next();
+    next(); //continue to controller
   } catch (error) {
     return res.status(401).json({
       success: false,

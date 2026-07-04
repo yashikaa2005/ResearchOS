@@ -1,11 +1,5 @@
-function App() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100">
-      <h1 className="text-5xl font-bold text-blue-600">
-        ResearchOS
-      </h1>
-    </div>
-  );
-}
+const App = () => {
+  return null;
+};
 
 export default App;
