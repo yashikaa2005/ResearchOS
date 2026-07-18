@@ -46,8 +46,23 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res) => {
+  console.log(`[AuthController] changePassword called for user: ${req.user.id}`);
+  try {
+    const result = await authService.changePassword(req.user.id, req.body);
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("[AuthController] changePassword error:", error);
+    return res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   register,
   login,
   getCurrentUser,
+  changePassword,
 };

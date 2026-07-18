@@ -70,7 +70,26 @@ const loginUser = async ({ email, password }) => {
     };
 };
 
+const changePassword = async (userId, { oldPassword, newPassword }) => {
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new Error("User not found");
+    }
+
+    const isPasswordMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isPasswordMatch) {
+        throw new Error("Current password is incorrect");
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedNewPassword;
+    await user.save();
+
+    return { success: true, message: "Password updated successfully" };
+};
+
 module.exports = {
     registerUser,
     loginUser,
+    changePassword,
 };

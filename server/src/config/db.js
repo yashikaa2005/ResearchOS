@@ -6,7 +6,12 @@ const mongoose = require("mongoose");
 
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URI);
+        // Disable command buffering so queries fail immediately if the DB is disconnected
+        mongoose.set("bufferCommands", false);
+
+        await mongoose.connect(process.env.MONGO_URI, {
+            serverSelectionTimeoutMS: 5000, // Fail fast if connection cannot be established within 5 seconds
+        });
 
         console.log("MongoDB Connected");
     } catch (error) {
